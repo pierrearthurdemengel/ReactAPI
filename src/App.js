@@ -14,7 +14,9 @@ class App extends Component {
         return response.json();
       })
       .then((result) => {
-        this.setState({ post: result });
+          setTimeout(() => {
+            this.setState({ post: result });
+          }, 1500);
       });
   }
 
@@ -23,7 +25,7 @@ class App extends Component {
     return (
       <div className="App">
         <h1>Notre dernier article :</h1>
-        <p>{this.state.post.title}</p>
+        <p>{this.state.post.title ? this.state.post.title : <p>Chargement...</p>}</p>
       </div>
     );
   }
