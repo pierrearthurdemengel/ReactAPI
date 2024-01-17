@@ -106,3 +106,40 @@ li {
 li:nth-child(even) {
   background-color: #f8f8f8;
 }
+
+.breach-details {
+  background-color: white;
+  padding: 15px;
+  margin-top: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+.breach-details h3 {
+  color: #007bff;
+}
+
+.breach-details p {
+  color: #333;
+  font-size: 14px;
+}
+
+.secure-now {
+  margin-top: 20px;
+}
+
+.secure-now button {
+  background-color: #28a745; /* Couleur verte */
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+}
+
+.secure-now button:hover {
+  background-color: #218838;
+}
+
