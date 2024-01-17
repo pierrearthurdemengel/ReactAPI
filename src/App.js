@@ -31,12 +31,13 @@ class App extends Component {
   renderBreaches() {
     const { breaches } = this.state;
     if (!breaches) return null;
-    return breaches.map(breach => (
-      <li key={breach.Name}>
+    return breaches.map((breach, index) => (
+      <li key={breach.Name} className="breach-item" style={{ animationDelay: `${index * 100}ms` }}>
         {breach.Name} ({breach.Domain})
       </li>
     ));
   }
+  
 
   render() {
     return (
