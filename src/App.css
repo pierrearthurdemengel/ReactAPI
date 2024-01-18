@@ -143,7 +143,7 @@ li:nth-child(even) {
   background-color: #218838;
 }
 
-.card {
+.card, .risks-section li {
   background-color: #ffcccb; /* Couleur d'alerte rouge clair */
   color: #d8000c; /* Couleur du texte rouge foncé pour le contraste */
   padding: 15px;
@@ -154,7 +154,7 @@ li:nth-child(even) {
   animation: slideIn 0.5s ease-out forwards;
 }
 
-.card p {
+.card p, .risks-section p {
   margin: 0;
   font-weight: bold; /* Texte en gras pour l'urgence */
 }
@@ -169,6 +169,38 @@ li:nth-child(even) {
     transform: translateX(0);
   }
 }
+
+.risks-section h2 {
+  color: #d8000c; /* Couleur pour l'urgence */
+}
+
+.risks-section ul {
+  list-style: inside square; /* Style de la liste */
+}
+
+.educational-section {
+  background-color: #e8f4fd;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.educational-section h2 {
+  color: #007bff;
+}
+
+.educational-section ul {
+  list-style: inside circle;
+}
+
+.educational-section a {
+  display: inline-block;
+  margin-top: 10px;
+  color: #007bff;
+  text-decoration: underline;
+}
+
 
 
 /* Smartphones */
