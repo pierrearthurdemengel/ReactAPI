@@ -63,7 +63,7 @@ form {
 }
 
 input {
-  padding: 10px 15px;
+  padding: 10px 0px;
   border: 2px solid #ddd;
   border-radius: 4px;
   margin-right: 10px;
@@ -113,7 +113,7 @@ li:nth-child(even) {
   margin-top: 15px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  text-align: left;
+  text-align: center;
 }
 
 .breach-details h3 {
@@ -143,3 +143,53 @@ li:nth-child(even) {
   background-color: #218838;
 }
 
+.card {
+  background-color: #ffcccb; /* Couleur d'alerte rouge clair */
+  color: #d8000c; /* Couleur du texte rouge foncé pour le contraste */
+  padding: 15px;
+  margin-top: 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-left: 6px solid #d8000c; /* Bordure gauche pour l'accentuation */
+  animation: slideIn 0.5s ease-out forwards;
+}
+
+.card p {
+  margin: 0;
+  font-weight: bold; /* Texte en gras pour l'urgence */
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+/* Smartphones */
+/* Media queries pour les smartphones */
+@media (max-width: 600px) {
+  .App {
+    width: 95%; /* Utiliser plus d'espace sur les petits écrans */
+    padding: 15px; /* Ajuster le padding */
+  }
+
+  input, button {
+    width: 100%; /* Pleine largeur pour les champs et les boutons */
+    margin: 10px 0; /* Ajuster la marge */
+  }
+
+  .breach-details {
+    padding: 10px; /* Padding plus petit pour les détails des fuites */
+  }
+
+  .secure-now button {
+    width: 100%; /* Pleine largeur pour le bouton 'Sécuriser maintenant' */
+  }
+
+}

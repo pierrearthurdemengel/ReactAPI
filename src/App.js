@@ -49,37 +49,41 @@ class App extends Component {
   render() {
     const { email, breaches } = this.state;
     const breachCount = breaches ? breaches.length : 0;
-    const breachMessage = breachCount > 0 ? 
-      `Votre adresse mail est compromise. Vos informations personnelles ont fuité ${breachCount} fois.` : 
-      "Aucune fuite trouvée pour cet email.";
-  
+
     return (
-      <div className="App">
-        <h1>Vérifiez si votre email a été compromis</h1>
-        <form onSubmit={this.handleSubmit}>
-          <input
-            type="email"
-            value={email}
-            onChange={this.handleEmailChange}
-            placeholder="Entrez votre email"
-            required
-          />
-          <button type="submit">Vérifier</button>
-        </form>
-        {breaches && <p>{breachMessage}</p>}
-        <ul>{this.renderBreaches()}</ul>
-        {breaches && breaches.length > 0 && (
-          <div className="secure-now">
-            <button onClick={this.handleSecureNow}>Sécuriser maintenant</button>
-          </div>
-        )}
-      </div>
+        <div className="App">
+            <h1>Vérifiez si votre email a été compromis</h1>
+            <form onSubmit={this.handleSubmit}>
+                <input
+                    type="email"
+                    value={email}
+                    onChange={this.handleEmailChange}
+                    placeholder="Entrez votre email"
+                    required
+                />
+                <button type="submit">Vérifier</button>
+            </form>
+            {breaches && (
+                <div className={breachCount > 0 ? "card" : ""}>
+                    <p>
+                        {breachCount > 0 
+                            ? `Votre adresse mail est compromise. Vos informations personnelles ont fuité ${breachCount} fois.` 
+                            : "Aucune fuite trouvée pour cet email."}
+                    </p>
+                </div>
+            )}
+            <ul>{this.renderBreaches()}</ul>
+            {breaches && breaches.length > 0 && (
+                <div className="secure-now">
+                    <button onClick={this.handleSecureNow}>Sécuriser maintenant</button>
+                </div>
+            )}
+        </div>
     );
-  }
+}
   
   handleSecureNow = () => {
     // Logique pour gérer le clic sur "Sécuriser maintenant"
-    // Par exemple, rediriger vers une page de conseils de sécurité
   };
   
 }
