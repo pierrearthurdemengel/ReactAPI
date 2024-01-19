@@ -15,7 +15,7 @@ class App extends Component {
     event.preventDefault();
     const { email } = this.state;
 
-    fetch(`http://localhost:3001/api/breachedaccount/${encodeURIComponent(email)}?truncateResponse=false`)
+    fetch(`https://salty-meadow-74963-9a39f496f9d8.herokuapp.com/api/breachedaccount/${encodeURIComponent(email)}?truncateResponse=false`)
       .then(response => {
         if (response.ok) return response.json();
         throw new Error('Aucune fuite trouvée pour cet email.');
