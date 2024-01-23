@@ -5,6 +5,7 @@ class App extends Component {
   state = {
     email: '',
     breaches: null,
+    lastCheckedEmail: '', // Ajout d'une nouvelle propriété dans l'état
   };
 
   handleEmailChange = (event) => {
@@ -13,21 +14,35 @@ class App extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const { email } = this.state;
+    const { email, lastCheckedEmail } = this.state;
+
+    // Vérifier si l'email actuel est le même que le dernier vérifié
+    if (email === lastCheckedEmail) {
+      alert("Veuillez entrer une adresse email différente pour une nouvelle vérification.");
+      return; // Arrêtez l'exécution de la méthode ici
+    }
 
     fetch(`https://salty-meadow-74963-9a39f496f9d8.herokuapp.com/api/breachedaccount/${encodeURIComponent(email)}?truncateResponse=false`)
       .then(response => {
-        if (response.ok) return response.json();
-        throw new Error('Aucune fuite trouvée pour cet email.');
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Erreur lors de la recherche de fuites pour cet email.');
+        }
       })
       .then(data => {
-        console.log(data); // Affiche les données pour vérification
-        this.setState({ breaches: data });
+        this.setState({
+          breaches: Array.isArray(data) ? data : [],
+          lastCheckedEmail: email, // Mettre à jour le dernier email vérifié
+        });
       })
       .catch(error => {
         console.error('Erreur:', error);
+        this.setState({ breaches: [] });
       });
   };
+  
+  
 
   renderBreaches() {
     const { breaches } = this.state;
