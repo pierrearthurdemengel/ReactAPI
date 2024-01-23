@@ -214,6 +214,7 @@ li:nth-child(even) {
   input, button {
     width: 100%; /* Pleine largeur pour les champs et les boutons */
     margin: 10px 0; /* Ajuster la marge */
+    display: block;
   }
 
   .breach-details {
