@@ -5,61 +5,67 @@ class App extends Component {
   state = {
     email: '',
     breaches: null,
-    lastCheckedEmail: '', // Ajout d'une nouvelle propriété dans l'état
+    lastCheckedEmail: '',
   };
 
   handleEmailChange = (event) => {
     this.setState({ email: event.target.value });
   };
 
-  handleSubmit = (event) => {
+  handleSubmit = async (event) => {
     event.preventDefault();
     const { email, lastCheckedEmail } = this.state;
-
-    // Vérifier si l'email actuel est le même que le dernier vérifié
+  
     if (email === lastCheckedEmail) {
       alert("Veuillez entrer une adresse email différente pour une nouvelle vérification.");
-      return; // Arrêtez l'exécution de la méthode ici
+      return;
     }
-
-    fetch(`https://salty-meadow-74963-9a39f496f9d8.herokuapp.com/api/breachedaccount/${encodeURIComponent(email)}?truncateResponse=false`)
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error('Erreur lors de la recherche de fuites pour cet email.');
+  
+    try {
+      const response = await fetch(`https://salty-meadow-74963-9a39f496f9d8.herokuapp.com/api/breachedaccount/${encodeURIComponent(email)}?truncateResponse=false`);
+      if (!response.ok) throw new Error('Erreur lors de la recherche de fuites pour cet email.');
+  
+      const breaches = await response.json();
+      const detailedBreaches = await Promise.all(breaches.map(async (breach) => {
+        try {
+          const detailResponse = await fetch(`https://salty-meadow-74963-9a39f496f9d8.herokuapp.com/api/breach/${breach.Name}`);
+          if (!detailResponse.ok) throw new Error();
+          return detailResponse.json();
+        } catch (error) {
+          return { Name: breach.Name, error: true }; // Retourne un objet avec le nom et une indication d'erreur
         }
-      })
-      .then(data => {
-        this.setState({
-          breaches: Array.isArray(data) ? data : [],
-          lastCheckedEmail: email, // Mettre à jour le dernier email vérifié
-        });
-      })
-      .catch(error => {
-        console.error('Erreur:', error);
-        this.setState({ breaches: [] });
-      });
+      }));
+  
+      this.setState({ breaches: detailedBreaches, lastCheckedEmail: email });
+    } catch (error) {
+      console.error('Erreur:', error);
+      this.setState({ breaches: null, lastCheckedEmail: '' });
+    }
   };
-  
-  
 
   renderBreaches() {
     const { breaches } = this.state;
     if (!breaches) return null;
-    return breaches.map(breach => (
-      <div key={breach.Name} className="breach-details">
-        <h3>{breach.Title || breach.Name}</h3>
-        <p><strong>Date de la fuite :</strong> {breach.BreachDate || 'Non spécifié'}</p>
-        <p>{breach.Description || 'Pas de description disponible'}</p>
-        <p><strong>Comptes affectés :</strong> {breach.PwnCount || 'Non spécifié'}</p>
-        <p><strong>Données exposées :</strong> {breach.DataClasses ? breach.DataClasses.join(', ') : 'Non spécifié'}</p>
-      </div>
-    ));
+    return breaches.map(breach => {
+      const formattedDate = breach.BreachDate 
+        ? new Date(breach.BreachDate).toLocaleDateString('fr-FR') 
+        : 'Non spécifié';
+  
+      return (
+        <div key={breach.Name} className="breach-details">
+          <h3>{breach.Title || breach.Name}</h3>
+          {breach.LogoPath && <img src={breach.LogoPath} alt={breach.Name} />}
+          <p><strong>Date de la fuite :</strong> {formattedDate}</p>
+          {breach.error 
+            ? <p>Détails non disponibles</p> 
+            : <p dangerouslySetInnerHTML={{ __html: breach.Description || 'Pas de description disponible' }}></p>}
+          <p><strong>Comptes affectés :</strong> {breach.PwnCount || 'Non spécifié'}</p>
+          <p><strong>Données exposées :</strong> {breach.DataClasses ? breach.DataClasses.join(', ') : 'Non spécifié'}</p>
+        </div>
+      );
+    });
   }
-
-
-
+  
 
   render() {
     const { email, breaches } = this.state;
